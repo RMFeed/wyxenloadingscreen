@@ -1,0 +1,9 @@
+# Kullanılmayan yedek görseller (52 MB, hiçbir yerden referans verilmiyor)
+yedek/
+
+# İşletim sistemi / editör artıkları
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
