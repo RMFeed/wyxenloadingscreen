@@ -259,8 +259,12 @@
   // GMod, yükleme ekranının sağ alt köşesine kendi workshop indirme panelini
   // çiziyor. Aşağıdaki iki sayı o panele ayrılan çerçevenin ölçüsü; oyundan
   // alınacak bir ekran görüntüsüne göre yalnızca bu ikisini değiştirmek yeterli.
-  var GMOD_SLOT_WIDTH = 400;
-  var GMOD_SLOT_HEIGHT = 150;
+  var GMOD_SLOT_WIDTH = 424;
+  var GMOD_SLOT_HEIGHT = 92;
+  // GMod paneli ekranın sağ alt köşesine yapışık çiziliyor; yuvayı o kadar
+  // köşeye doğru kaydırıyoruz ki panel çerçevenin içinde kalsın.
+  var GMOD_SLOT_SHIFT_X = 14;
+  var GMOD_SLOT_SHIFT_Y = 20;
 
   // Dikey boşluğu artırmak sol paneli kısaltıyor. Bu ölçüm HER ZAMAN temel
   // boşlukta yapılmalı; yoksa "sığdı / sığmadı" sonucu bir öncekine bağlı
@@ -380,9 +384,9 @@
       // yuvayı çerçevenin sağ kenarından geriye doğru konumluyoruz.
       slot.style.width = GMOD_SLOT_WIDTH + "px";
       slot.style.height = rowHeight + "px";
-      slot.style.left = (edge + width - GMOD_SLOT_WIDTH) + "px";
+      slot.style.left = (edge + width - GMOD_SLOT_WIDTH + GMOD_SLOT_SHIFT_X) + "px";
       slot.style.right = "auto";
-      slot.style.bottom = FRAME_RING + "px";
+      slot.style.bottom = (FRAME_RING - GMOD_SLOT_SHIFT_Y) + "px";
     }
 
     // Alt sıra ekranla aynı genişlikte: solda günlük, sağda GMod yuvası.
@@ -394,7 +398,7 @@
         journey.style.display = "none";
       } else {
         journey.style.display = "";
-        wanted = journeyWidth < 640 ? "journey-panel is-compact" : "journey-panel";
+        wanted = journeyWidth < 920 ? "journey-panel is-compact" : "journey-panel";
         if (journey.className !== wanted) journey.className = wanted;
         journey.style.left = edge + "px";
         journey.style.width = journeyWidth + "px";
