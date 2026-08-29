@@ -394,7 +394,10 @@
         journey.style.width = journeyWidth + "px";
         journey.style.height = rowHeight + "px";
         journey.style.right = "auto";
-        journey.style.bottom = FRAME_RING + "px";
+        // Bar sayfanın altına değil, doğrudan çerçevenin altına oturuyor;
+        // aksi halde uzun ekranlarda arada ölü boşluk kalıyor.
+        journey.style.top = (FRAME_RING + height + FRAME_GAP) + "px";
+        journey.style.bottom = "auto";
       }
     }
   }
