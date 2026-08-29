@@ -261,8 +261,10 @@
   // alınacak bir ekran görüntüsüne göre yalnızca bu ikisini değiştirmek yeterli.
   var ROW_HEIGHT = 82;  // .journey-panel yüksekliği
   var DESIGN_HEIGHT = 1440;  // tasarımın çizildiği referans yükseklik
-  // GMod indirme panelini kendi çiziyor; barın sağ ucunda o kadar yer boş kalıyor.
-  var GMOD_RESERVE = 440;
+  // GMod indirme panelini kendi çiziyor ve sayfa ölçeğinden etkilenmiyor:
+  // bu yüzden pay CSS pikseli değil, EKRAN pikseli olarak tutuluyor.
+  var GMOD_RESERVE = 470;
+  var pageScale = 1;
 
   // Dikey boşluğu artırmak sol paneli kısaltıyor. Bu ölçüm HER ZAMAN temel
   // boşlukta yapılmalı; yoksa "sığdı / sığmadı" sonucu bir öncekine bağlı
@@ -299,6 +301,7 @@
 
     if (scale > 1.6) scale = 1.6;
     if (scale < 0.5) scale = 0.5;
+    pageScale = scale;
     document.documentElement.style.zoom = scale;
   }
 
@@ -391,7 +394,7 @@
     // Alt bar ekranla aynı genişlikte ve hizada.
     if (journey) {
       // Sağ uçta GMod'un indirme paneline yer bırakılıyor.
-      journeyWidth = width - GMOD_RESERVE;
+      journeyWidth = width - Math.round(GMOD_RESERVE / pageScale);
 
       // 470px altında adımlar sığmıyor ve taşıyor; günlüğü tamamen gizliyoruz.
       if (journeyWidth < 470) {
