@@ -264,7 +264,7 @@
   // GMod paneli ekranın sağ alt köşesine yapışık çiziliyor; yuvayı o kadar
   // köşeye doğru kaydırıyoruz ki panel çerçevenin içinde kalsın.
   var GMOD_SLOT_SHIFT_X = 14;
-  var GMOD_SLOT_SHIFT_Y = 20;
+  var GMOD_SLOT_SHIFT_Y = 12;
 
   // Dikey boşluğu artırmak sol paneli kısaltıyor. Bu ölçüm HER ZAMAN temel
   // boşlukta yapılmalı; yoksa "sığdı / sığmadı" sonucu bir öncekine bağlı
@@ -350,18 +350,21 @@
     // 1440p ve üstünde 16:9 çerçeve ile alt sıra arasında kocaman bir boşluk
     // kalıyordu; artan yeri sayfanın dikey boşluğuna dağıtıp bütünü dengeliyoruz.
     if (slack > 24) {
-      // Panel ne kadar kısalabilir: kurallar taşmadan verebileceği pay kadar.
-      extra = Math.min(
-        Math.floor(slack / 2),
-        Math.round(window.innerHeight * 0.09),
-        Math.floor((spare - 14) / 2)  // 14px pay: farklı font ölçümlerinde taşmasın
-      );
+      extra = Math.min(Math.floor(slack / 2), Math.round(window.innerHeight * 0.13));
+      screen.style.paddingTop = (basePad + extra) + "px";
+      screen.style.paddingBottom = (basePad + extra) + "px";
 
-      if (extra > 0) {
-        screen.style.paddingTop = (basePad + extra) + "px";
-        screen.style.paddingBottom = (basePad + extra) + "px";
-        roomHeight = column.clientHeight - bottomBlock - FRAME_RING * 2;
-        slack = roomHeight - height;
+      // Kurallar kısılan panele sığmadıysa boşluğu o kadar geri ver.
+      spare = rulesSpare();
+      if (spare < 14) extra = Math.max(extra - Math.ceil((14 - spare) / 2), 0);
+
+      screen.style.paddingTop = (basePad + extra) + "px";
+      screen.style.paddingBottom = (basePad + extra) + "px";
+      roomHeight = column.clientHeight - bottomBlock - FRAME_RING * 2;
+      slack = roomHeight - height;
+      if (slack < 0) {
+        height = roomHeight;
+        width = Math.round((height - 2) * FRAME_RATIO) + 2;
       }
     }
 
@@ -404,7 +407,7 @@
         journey.style.width = journeyWidth + "px";
         journey.style.height = rowHeight + "px";
         journey.style.right = "auto";
-        journey.style.bottom = FRAME_RING + "px";
+        journey.style.bottom = (FRAME_RING - GMOD_SLOT_SHIFT_Y) + "px";
       }
     }
   }
