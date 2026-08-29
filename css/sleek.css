@@ -1011,31 +1011,7 @@ a.social-item:hover { opacity: 0.82; transform: translateY(-1px); }
   .journey-destination strong { max-width: 88px; font-size: 11px; }
 }
 
-/* 1080p ve altında kural listesi tam boyla sığmıyor; yalnızca tipografi kısılıyor. */
-@media (max-height: 1150px) {
-  #rules-list li { margin-bottom: 9px; padding-left: 23px; font-size: 13px; line-height: 1.36; }
-  #rules-list li::before { font-size: 11px; }
-  .rules-card { padding: 20px 22px; }
-}
 
-/* Alçak ekranlarda 9 kural sığsın diye üst bloklar ve punto biraz kısılıyor. */
-@media (max-height: 840px) {
-  .brand-block { flex-basis: 143px; }
-  #title { min-height: 128px; }
-  #title img { width: 256px; }
-  .ornament { margin-top: -8px; }
-  .status-block { flex-basis: 58px; }
-  .server-card { flex-basis: 64px; }
-  .message-block { flex-basis: 72px; padding: 0 12px; }
-  .owl-message { font-size: 16px; }
-  .rules-card { margin-top: 7px; padding: 16px 18px; }
-  .rules-card .section-title { margin-bottom: 10px; }
-  #rules-list li { margin-bottom: 4px; padding-left: 19px; font-size: 11px; line-height: 1.26; }
-  #rules-list li::before { font-size: 9px; }
-  .social-links { flex-basis: 54px; }
-  .social-icon { width: 32px; height: 32px; flex-basis: 32px; font-size: 14px; }
-  .social-copy span { font-size: 11px; }
-}
 
 @media (max-width: 1300px) {
   .journey-status-wrap { display: none; }
