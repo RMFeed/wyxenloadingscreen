@@ -260,6 +260,8 @@
   // çiziyor. Aşağıdaki iki sayı o panele ayrılan çerçevenin ölçüsü; oyundan
   // alınacak bir ekran görüntüsüne göre yalnızca bu ikisini değiştirmek yeterli.
   var ROW_HEIGHT = 82;  // .journey-panel yüksekliği
+  // GMod indirme panelini kendi çiziyor; barın sağ ucunda o kadar yer boş kalıyor.
+  var GMOD_RESERVE = 440;
 
   // Dikey boşluğu artırmak sol paneli kısaltıyor. Bu ölçüm HER ZAMAN temel
   // boşlukta yapılmalı; yoksa "sığdı / sığmadı" sonucu bir öncekine bağlı
@@ -378,7 +380,8 @@
 
     // Alt bar ekranla aynı genişlikte ve hizada.
     if (journey) {
-      journeyWidth = width;
+      // Sağ uçta GMod'un indirme paneline yer bırakılıyor.
+      journeyWidth = width - GMOD_RESERVE;
 
       // 470px altında adımlar sığmıyor ve taşıyor; günlüğü tamamen gizliyoruz.
       if (journeyWidth < 470) {
