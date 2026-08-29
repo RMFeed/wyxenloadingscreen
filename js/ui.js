@@ -319,29 +319,23 @@
     basePad = parseInt(window.getComputedStyle(screen).paddingTop, 10) || 24;
 
     spare = rulesSpare();
-    if (journey) {
-      journey.style.display = "";
-      journey.style.height = "";
-    }
     slotVisible = slot && window.getComputedStyle(slot).display !== "none";
 
-    // Yükseklik ölçüm yerine sabitten geliyor. sleek.css ağ üzerinden geç
-    // uygulandığında stilsiz alt bar 82px yerine ~288px ölçülüyor ve tüm
-    // yerleşim yanlış hesaplanıyordu.
-    if (slotVisible) {
-      rowHeight = GMOD_SLOT_HEIGHT;
-    } else if (journey && window.getComputedStyle(journey).display !== "none") {
-      rowHeight = Math.min(journey.offsetHeight, GMOD_SLOT_HEIGHT);
-    } else {
-      rowHeight = 0;
-    }
+    // Hiçbir ölçüm yok: alt sıra yüksekliği sabit. Böylece CSS geç gelse de
+    // hesap doğru ve fonksiyon hiçbir noktada yarım uygulanmış hal bırakmıyor.
+    rowHeight = slotVisible ? GMOD_SLOT_HEIGHT : 0;
 
     // Hesap bezel halkaları dahil yapılıyor: ekranın ve alt sıranın dış kenarı
     // sol panelin kenarlığıyla birebir aynı hizaya otursun.
     bottomBlock = rowHeight ? rowHeight + FRAME_RING * 2 + FRAME_GAP : 0;
     roomWidth = column.clientWidth - FRAME_RING * 2;
     roomHeight = column.clientHeight - bottomBlock - FRAME_RING * 2;
-    if (roomWidth <= 0 || roomHeight <= 0) return;
+    // Erken çıkarsak sıfırladığımız dikey boşluğu geri koy.
+    if (roomWidth <= 0 || roomHeight <= 0) {
+      screen.style.paddingTop = basePad + "px";
+      screen.style.paddingBottom = basePad + "px";
+      return;
+    }
 
     // Çerçeve border-box olduğu için 1px'lik kenarlıkları hesaba katıyoruz;
     // böylece 16:9 oran fotoğrafın çizildiği iç alanda birebir tutuyor.
