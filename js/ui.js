@@ -345,22 +345,20 @@
 
     // 1440p ve üstünde 16:9 çerçeve ile alt sıra arasında kocaman bir boşluk
     // kalıyordu; artan yeri sayfanın dikey boşluğuna dağıtıp bütünü dengeliyoruz.
+    // Artan yeri dikey boşluğa dağıt, ama paneli kuralları taşıracak kadar
+    // kısaltma: pay temel boşlukta ölçüldüğü için sonuç deterministik.
     if (slack > 24) {
-      extra = Math.min(Math.floor(slack / 2), Math.round(window.innerHeight * 0.13));
-      screen.style.paddingTop = (basePad + extra) + "px";
-      screen.style.paddingBottom = (basePad + extra) + "px";
+      extra = Math.min(
+        Math.floor(slack / 2),
+        Math.round(window.innerHeight * 0.09),
+        Math.floor((spare - 16) / 2)
+      );
 
-      // Kurallar kısılan panele sığmadıysa boşluğu o kadar geri ver.
-      spare = rulesSpare();
-      if (spare < 14) extra = Math.max(extra - Math.ceil((14 - spare) / 2), 0);
-
-      screen.style.paddingTop = (basePad + extra) + "px";
-      screen.style.paddingBottom = (basePad + extra) + "px";
-      roomHeight = column.clientHeight - bottomBlock - FRAME_RING * 2;
-      slack = roomHeight - height;
-      if (slack < 0) {
-        height = roomHeight;
-        width = Math.round((height - 2) * FRAME_RATIO) + 2;
+      if (extra > 0) {
+        screen.style.paddingTop = (basePad + extra) + "px";
+        screen.style.paddingBottom = (basePad + extra) + "px";
+        roomHeight = column.clientHeight - bottomBlock - FRAME_RING * 2;
+        slack = roomHeight - height;
       }
     }
 
