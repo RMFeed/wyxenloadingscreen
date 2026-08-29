@@ -260,6 +260,7 @@
   // çiziyor. Aşağıdaki iki sayı o panele ayrılan çerçevenin ölçüsü; oyundan
   // alınacak bir ekran görüntüsüne göre yalnızca bu ikisini değiştirmek yeterli.
   var ROW_HEIGHT = 82;  // .journey-panel yüksekliği
+  var DESIGN_HEIGHT = 1440;  // tasarımın çizildiği referans yükseklik
   // GMod indirme panelini kendi çiziyor; barın sağ ucunda o kadar yer boş kalıyor.
   var GMOD_RESERVE = 440;
 
@@ -288,6 +289,17 @@
     }
 
     return available - needed;
+  }
+
+  // Tasarımın tamamı 1440p yüksekliğe göre ölçülendirildi. Sayfayı tek bir
+  // katsayıyla ölçekleyince 1080p, 2K'nın birebir küçültülmüş hali oluyor:
+  // logo, punto, boşluklar, hepsi aynı oranda iniyor.
+  function applyScale() {
+    var scale = window.innerHeight / DESIGN_HEIGHT;
+
+    if (scale > 1.6) scale = 1.6;
+    if (scale < 0.5) scale = 0.5;
+    document.documentElement.style.zoom = scale;
   }
 
   function fitFrame() {
@@ -350,7 +362,7 @@
     if (slack > 24) {
       extra = Math.min(
         Math.floor(slack / 2),
-        Math.round(window.innerHeight * 0.09),
+        Math.round(document.documentElement.clientHeight * 0.09),
         Math.floor((spare - 16) / 2)
       );
 
@@ -565,6 +577,7 @@
     }
 
     enableCinema();
+    applyScale();
     fitFrame();
     paint(current);
 
@@ -612,17 +625,23 @@
 
   // Stil dosyası ve fontlar ağdan geldiğinde ölçüler değişiyor; yerleşimi
   // yeniden kuruyoruz.
-  window.addEventListener("load", fitFrame, false);
-  window.setTimeout(fitFrame, 400);
-  window.setTimeout(fitFrame, 1500);
+  function relayout() {
+    applyScale();
+    fitFrame();
+  }
+
+  applyScale();
+  window.addEventListener("load", relayout, false);
+  window.setTimeout(relayout, 400);
+  window.setTimeout(relayout, 1500);
 
   if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
-    document.fonts.ready.then(fitFrame);
+    document.fonts.ready.then(relayout);
   }
 
   window.addEventListener("resize", function () {
     window.clearTimeout(fitTimer);
-    fitTimer = window.setTimeout(fitFrame, 120);
+    fitTimer = window.setTimeout(relayout, 120);
   }, false);
 
   if (musicButton) musicButton.addEventListener("click", toggleMusic, false);
