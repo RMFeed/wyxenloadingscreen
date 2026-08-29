@@ -598,39 +598,6 @@ a.social-item:hover { opacity: 0.82; transform: translateY(-1px); }
 
 .journey-corner { display: none; }
 
-/* GMod'un kendi workshop indirme paneline ayrılan yer. Ölçüler ui.js
-   içindeki GMOD_SLOT_WIDTH / GMOD_SLOT_HEIGHT ile belirleniyor. */
-.gmod-slot {
-  position: absolute;
-  z-index: 3;
-  right: 11px;
-  bottom: 11px;
-  width: 400px;
-  height: 150px;
-  box-sizing: border-box;
-  border: 1px solid rgba(173, 132, 67, 0.5);
-  background: linear-gradient(180deg, rgba(3, 9, 14, 0.9), rgba(2, 7, 11, 0.82));
-  box-shadow:
-    0 0 0 1px rgba(6, 11, 15, 0.95),
-    0 0 0 10px rgba(4, 9, 13, 0.88),
-    0 0 0 11px rgba(146, 109, 55, 0.34),
-    0 18px 50px rgba(0, 0, 0, 0.5),
-    inset 0 0 40px rgba(0, 0, 0, 0.35);
-}
-
-.gmod-slot-corner {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border: 0 solid rgba(198, 156, 88, 0.7);
-  pointer-events: none;
-}
-
-.gmod-slot-tl { top: 8px; left: 8px; border-top-width: 1px; border-left-width: 1px; }
-.gmod-slot-tr { top: 8px; right: 8px; border-top-width: 1px; border-right-width: 1px; }
-.gmod-slot-bl { bottom: 8px; left: 8px; border-bottom-width: 1px; border-left-width: 1px; }
-.gmod-slot-br { bottom: 8px; right: 8px; border-bottom-width: 1px; border-right-width: 1px; }
-
 /* Alt sıra daraldığında günlüğün ikincil bölümleri çekiliyor. */
 .journey-panel.is-compact .journey-status-wrap,
 .journey-panel.is-compact .journey-destination { display: none; }
@@ -1076,7 +1043,6 @@ a.social-item:hover { opacity: 0.82; transform: translateY(-1px); }
 
 @media (max-width: 1120px) {
   .journey-panel { display: none; }
-  .gmod-slot { display: none; }
   .cinema-frame { bottom: 0; }
 }
 

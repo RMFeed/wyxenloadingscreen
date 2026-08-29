@@ -259,12 +259,7 @@
   // GMod, yükleme ekranının sağ alt köşesine kendi workshop indirme panelini
   // çiziyor. Aşağıdaki iki sayı o panele ayrılan çerçevenin ölçüsü; oyundan
   // alınacak bir ekran görüntüsüne göre yalnızca bu ikisini değiştirmek yeterli.
-  var GMOD_SLOT_WIDTH = 424;
-  var GMOD_SLOT_HEIGHT = 92;
-  // GMod paneli ekranın sağ alt köşesine yapışık çiziliyor; yuvayı o kadar
-  // köşeye doğru kaydırıyoruz ki panel çerçevenin içinde kalsın.
-  var GMOD_SLOT_SHIFT_X = 14;
-  var GMOD_SLOT_SHIFT_Y = 12;
+  var ROW_HEIGHT = 82;  // .journey-panel yüksekliği
 
   // Dikey boşluğu artırmak sol paneli kısaltıyor. Bu ölçüm HER ZAMAN temel
   // boşlukta yapılmalı; yoksa "sığdı / sığmadı" sonucu bir öncekine bağlı
@@ -297,9 +292,7 @@
     var screen = document.querySelector(".loading-screen");
     var frame = document.querySelector(".cinema-frame");
     var journey = document.querySelector(".journey-panel");
-    var slot = document.querySelector(".gmod-slot");
     var column = frame && frame.parentNode;
-    var slotVisible;
     var basePad;
     var rowHeight;
     var bottomBlock;
@@ -323,11 +316,12 @@
     basePad = parseInt(window.getComputedStyle(screen).paddingTop, 10) || 24;
 
     spare = rulesSpare();
-    slotVisible = slot && window.getComputedStyle(slot).display !== "none";
 
     // Hiçbir ölçüm yok: alt sıra yüksekliği sabit. Böylece CSS geç gelse de
     // hesap doğru ve fonksiyon hiçbir noktada yarım uygulanmış hal bırakmıyor.
-    rowHeight = slotVisible ? GMOD_SLOT_HEIGHT : 0;
+    rowHeight = (journey && window.getComputedStyle(journey).display !== "none")
+      ? ROW_HEIGHT
+      : 0;
 
     // Hesap bezel halkaları dahil yapılıyor: ekranın ve alt sıranın dış kenarı
     // sol panelin kenarlığıyla birebir aynı hizaya otursun.
@@ -382,32 +376,22 @@
     frame.style.right = "auto";
     frame.style.bottom = "auto";
 
-    if (slot) {
-      // Sağ kenar "right" ile verilirse tek sayı yuvarlamalarında 1px kayıyor;
-      // yuvayı çerçevenin sağ kenarından geriye doğru konumluyoruz.
-      slot.style.width = GMOD_SLOT_WIDTH + "px";
-      slot.style.height = rowHeight + "px";
-      slot.style.left = (edge + width - GMOD_SLOT_WIDTH + GMOD_SLOT_SHIFT_X) + "px";
-      slot.style.right = "auto";
-      slot.style.bottom = (FRAME_RING - GMOD_SLOT_SHIFT_Y) + "px";
-    }
-
-    // Alt sıra ekranla aynı genişlikte: solda günlük, sağda GMod yuvası.
+    // Alt bar ekranla aynı genişlikte ve hizada.
     if (journey) {
-      journeyWidth = width - (slotVisible ? GMOD_SLOT_WIDTH + FRAME_GAP : 0);
+      journeyWidth = width;
 
       // 470px altında adımlar sığmıyor ve taşıyor; günlüğü tamamen gizliyoruz.
       if (journeyWidth < 470) {
         journey.style.display = "none";
       } else {
         journey.style.display = "";
-        wanted = journeyWidth < 920 ? "journey-panel is-compact" : "journey-panel";
+        wanted = journeyWidth < 640 ? "journey-panel is-compact" : "journey-panel";
         if (journey.className !== wanted) journey.className = wanted;
         journey.style.left = edge + "px";
         journey.style.width = journeyWidth + "px";
         journey.style.height = rowHeight + "px";
         journey.style.right = "auto";
-        journey.style.bottom = (FRAME_RING - GMOD_SLOT_SHIFT_Y) + "px";
+        journey.style.bottom = FRAME_RING + "px";
       }
     }
   }
