@@ -324,10 +324,17 @@
       journey.style.height = "";
     }
     slotVisible = slot && window.getComputedStyle(slot).display !== "none";
-    rowHeight = Math.max(
-      slotVisible ? GMOD_SLOT_HEIGHT : 0,
-      journey ? journey.offsetHeight : 0
-    );
+
+    // Yükseklik ölçüm yerine sabitten geliyor. sleek.css ağ üzerinden geç
+    // uygulandığında stilsiz alt bar 82px yerine ~288px ölçülüyor ve tüm
+    // yerleşim yanlış hesaplanıyordu.
+    if (slotVisible) {
+      rowHeight = GMOD_SLOT_HEIGHT;
+    } else if (journey && window.getComputedStyle(journey).display !== "none") {
+      rowHeight = Math.min(journey.offsetHeight, GMOD_SLOT_HEIGHT);
+    } else {
+      rowHeight = 0;
+    }
 
     // Hesap bezel halkaları dahil yapılıyor: ekranın ve alt sıranın dış kenarı
     // sol panelin kenarlığıyla birebir aynı hizaya otursun.
@@ -616,6 +623,16 @@
   }
 
   window.setTimeout(releaseBackstretch, 8000);
+
+  // Stil dosyası ve fontlar ağdan geldiğinde ölçüler değişiyor; yerleşimi
+  // yeniden kuruyoruz.
+  window.addEventListener("load", fitFrame, false);
+  window.setTimeout(fitFrame, 400);
+  window.setTimeout(fitFrame, 1500);
+
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+    document.fonts.ready.then(fitFrame);
+  }
 
   window.addEventListener("resize", function () {
     window.clearTimeout(fitTimer);
